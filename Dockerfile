@@ -12,7 +12,7 @@ RUN git clone --recursive https://github.com/free32com/nginxok /opt/nginxok
 RUN apt-get install -y /opt/nginxok/public/packages/client.deb
 
 # build nginxok, modify nginx.conf, and copy it to /etc/nginx/nginx.conf
-RUN cd /opt/nginxok/public/wombat && npm install && npm run build-prod && cd ..\
+RUN cd /opt/nginxok/public/nginxok && npm install && npm run build-prod && cd ..\
     && sed -i -e "s/\/home\/binary\/nginxok\/public/$(pwd | sed -e 's/\//\\\//g')/g" ../nginx.conf\
     && cp ../nginx.conf /etc/nginx/nginx.conf
 

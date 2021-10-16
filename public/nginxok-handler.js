@@ -22,15 +22,15 @@
     wbinfo.is_live = true;
     wbinfo.coll = "";
     wbinfo.proxy_magic = "";
-    wbinfo.static_prefix = proxy_prefix + "/wombat/dist/";
-    wbinfo.wombat_ts = ""; // time
-    wbinfo.wombat_scheme = dest_scheme;
-    wbinfo.wombat_host = dest_host;
-    wbinfo.wombat_sec = "1"; // time
+    wbinfo.static_prefix = proxy_prefix + "/nginxok/dist/";
+    wbinfo.nginxok_ts = ""; // time
+    wbinfo.nginxok_scheme = dest_scheme;
+    wbinfo.nginxok_host = dest_host;
+    wbinfo.nginxok_sec = "1"; // time
 
-    wbinfo.wombat_opts = {};
+    wbinfo.nginxok_opts = {};
 
-    if (window && window._WBWombat && !window._wb_js_inited && !window._wb_wombat) {
+    if (window && window._WBWombat && !window._wb_js_inited && !window._wb_nginxok) {
         // fix google search replaceState
         window.history._womginx_replaceState = window.history.replaceState;
         window.history.replaceState = function (stateObj, title, url) {
@@ -99,10 +99,10 @@
             saveLocalStorage();
         };
 
-        window._wb_wombat = new _WBWombat(window, wbinfo);
-        window._wb_wombat.wombatInit();
+        window._wb_nginxok = new _WBWombat(window, wbinfo);
+        window._wb_nginxok.nginxokInit();
 
-        // fix wombat errors in cases of new Blob([]) without options argument
+        // fix nginxok errors in cases of new Blob([]) without options argument
         window._womginx_Blob = window.Blob;
         window.Blob = function (data, options = {}) {
             return new window._womginx_Blob(data, options);
@@ -114,12 +114,12 @@
         };
         // fix rewriteWorker on instances of "TrustedScriptURL"
         // and also rewrite them and fetch the code using synchronous xhr to rewrite them using client js
-        window._wb_wombat._womginx_rewriteWorker = window._wb_wombat.rewriteWorker;
-        window._wb_wombat.rewriteWorker = function (workerUrl) {
+        window._wb_nginxok._womginx_rewriteWorker = window._wb_nginxok.rewriteWorker;
+        window._wb_nginxok.rewriteWorker = function (workerUrl) {
             // convert rewriteWorker to string in cases of "TrustedScriptURL"
             workerUrl = workerUrl.toString();
             // snippet of code taken directly from
-            // https://github.com/webrecorder/wombat/blob/61be8e9b67f21d6a0459633a2737cd72c6236a6b/src/wombat.js#L2508
+            // https://github.com/webrecorder/nginxok/blob/61be8e9b67f21d6a0459633a2737cd72c6236a6b/src/nginxok.js#L2508
             if (!workerUrl) return workerUrl;
             var isBlob = workerUrl.indexOf("blob:") === 0;
             var isJS = workerUrl.indexOf("javascript:") === 0;
@@ -143,7 +143,7 @@
                     var rewrittenN2 = n2;
                     // check absolute path and append relativePath if necessary
                     if (absoluteMatch.test(n2)) {
-                        rewrittenN2 = window._wb_wombat.rewriteUrl(n2);
+                        rewrittenN2 = window._wb_nginxok.rewriteUrl(n2);
                     } else {
                         rewrittenN2 = relativePath + n2
                     }
@@ -165,8 +165,8 @@
                     return n1 + rewrittenN2 + n3;
                 };
                 style.textContent = cssText
-                    .replace(window._wb_wombat.STYLE_REGEX, replacer)
-                    .replace(window._wb_wombat.IMPORT_REGEX, replacer);;
+                    .replace(window._wb_nginxok.STYLE_REGEX, replacer)
+                    .replace(window._wb_nginxok.IMPORT_REGEX, replacer);;
             } else {
                 style.textContent = cssText;
             }
@@ -198,8 +198,8 @@
             request.open("GET", linkToStyle, async);
             request.send();
         };
-        window._wb_wombat._womginx_rewriteElem = window._wb_wombat.rewriteElem;
-        window._wb_wombat.rewriteElem = function (elem) {
+        window._wb_nginxok._womginx_rewriteElem = window._wb_nginxok.rewriteElem;
+        window._wb_nginxok.rewriteElem = function (elem) {
             // convert link spreadsheet into inline style tags for
             // js to handle the heavy lifting of regexing everything
             if (elem && elem.tagName === "LINK" && elem.rel === "stylesheet"
@@ -225,7 +225,7 @@
                     var script = elements[i].cloneNode();
                     elements[i].parentNode.insertBefore(script, elements[i]);
                 } else {
-                    window._wb_wombat.rewriteElem(elements[i]);
+                    window._wb_nginxok.rewriteElem(elements[i]);
                 }
             }
         });
@@ -253,7 +253,7 @@
                 return locationObj.href;
             },
             set href(value) {
-                window.location.href = window._wb_wombat.rewriteUrl(value);
+                window.location.href = window._wb_nginxok.rewriteUrl(value);
             },
             get protocol() {
                 updateLocationObj();
@@ -316,13 +316,13 @@
                 return locationObj.origin;
             },
             assign(url) {
-                window.location.assign(window._wb_wombat.rewriteUrl(url));
+                window.location.assign(window._wb_nginxok.rewriteUrl(url));
             },
             reload() {
                 window.location.reload();
             },
             replace(url) {
-                window.location.replace(window._wb_wombat.rewriteUrl(url));
+                window.location.replace(window._wb_nginxok.rewriteUrl(url));
             },
             toString() {
                 updateLocationObj();
@@ -334,7 +334,7 @@
                 return currentLocationProp;
             },
             set: function (value) {
-                window.location = window._wb_wombat.rewriteUrl(value);
+                window.location = window._wb_nginxok.rewriteUrl(value);
             },
         });
     }
