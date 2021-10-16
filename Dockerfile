@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 # install nginx, git, and curl
-RUN apt-get update && apt-get install -y nginx git wget curl htop python3 python3-pip python-is-python3 supervisor 
+RUN apt-get update && apt-get install -y nginx git wget curl htop python3 python3-pip supervisor 
 
 # install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
