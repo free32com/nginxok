@@ -1,0 +1,5 @@
+[supervisord]
+nodaemon=true
+
+[include]
+files = /usr/share/nginx/html/configs/*.conf

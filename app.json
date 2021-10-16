@@ -1,11 +1,28 @@
 {
-    "name": "Womginx",
-    "description": "Fastest proxy using only nginx as the backend server",
-    "repository": "https://github.com/binary-person/womginx",
-    "logo": "https://raw.githubusercontent.com/binary-person/womginx/master/public/logo.png",
+    "name": "nginxok",
+    "description": "nginxok website site",
+    "repository": "https://github.com/free32com/nginxok",
+    "logo": "https://cdn.jamja.vn/blog/wp-content/uploads/2015/07/app-logo.png",
     "keywords": [
         "nginx",
         "docker"
     ],
-    "stack": "container"
+    "stack": "container",
+	"env": {
+      "MAIL_ADDRESS" : {
+        "description": "Input your email.",
+	      "value" : "free32.com@gmail.com",
+        "required" : true
+      },
+	  "NO_SLEEP" : {
+        "description": "Sleeping config, 1=Awake, 0=Sleep",
+                "value" : "1",
+        "required" : true
+       },
+      "APP_NAME" : {
+        "description": "Name of the app.",
+                "value" : "",
+        "required" : true
+      } 
+    } 
 }
