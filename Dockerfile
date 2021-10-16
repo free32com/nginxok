@@ -1,13 +1,7 @@
 FROM ubuntu:18.04
 
-# install python 3.8
-RUN apt-get install software-properties-common
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt-get update
-RUN apt-get install python3.8
-
 # install nginx, git, and curl
-RUN apt-get update && apt-get install -y nginx git wget curl htop supervisor 
+RUN apt-get update && apt-get install -y nginx git wget curl htop python3.7 supervisor 
 
 # install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
