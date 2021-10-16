@@ -1,11 +1,11 @@
 {
-  "name": "P2King",
-  "logo": "https://cdn.jamja.vn/blog/wp-content/uploads/2015/07/app-logo.png",
-  "description": "P2King app on heroku",
-  "keywords": ["Docker"],
-  "env": {
-  },
-  "website": "",
-  "repository": "https://heroku.com/deploy?template=https://github.com/free32com/p2p",
-  "stack": "container"
- }
+    "name": "Womginx",
+    "description": "Fastest proxy using only nginx as the backend server",
+    "repository": "https://github.com/binary-person/womginx",
+    "logo": "https://raw.githubusercontent.com/binary-person/womginx/master/public/logo.png",
+    "keywords": [
+        "nginx",
+        "docker"
+    ],
+    "stack": "container"
+}

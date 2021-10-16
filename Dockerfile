@@ -1,32 +1,22 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
-RUN apt-get update
-RUN apt-cache search nginx
-RUN apt-get install -y curl \
-  nginx \
-  supervisor
+# install nginx, git, and curl
+RUN apt-get update && apt-get install -y nginx git curl
 
-RUN rm -f /etc/nginx/conf.d/default.conf
-RUN apt-get autoremove -y
-RUN apt-get clean
-RUN apt-get autoclean
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# install nodejs
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
 
-COPY config/nginx.conf /etc/nginx/nginx.conf
+# clone repo
+RUN git clone --recursive https://github.com/binary-person/womginx /opt/womginx
 
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# build womginx, modify nginx.conf, and copy it to /etc/nginx/nginx.conf
+RUN cd /opt/womginx/public/wombat && npm install && npm run build-prod && cd ..\
+    && sed -i -e "s/\/home\/binary\/womginx\/public/$(pwd | sed -e 's/\//\\\//g')/g" ../nginx.conf\
+    && cp ../nginx.conf /etc/nginx/nginx.conf
 
-RUN mkdir -p /var/www/html
-
-RUN chown -R nobody.nogroup /run 
-RUN chown -R nobody.nogroup /var/lib/nginx 
-RUN chown -R nobody.nogroup /var/log/nginx
-
-WORKDIR /var/www/html
-COPY index.php /var/www/html/
-
-EXPOSE 80
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
-
-HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1:80/fpm-ping
+# remove all ssl entries and replace 'listen 80' with 'listen $PORT'
+CMD sed -i '/ssl_certificate/d' /etc/nginx/nginx.conf\
+    && sed -i '/listen 443/d' /etc/nginx/nginx.conf\
+    && sed -i -e "s/listen 80/listen $PORT/" /etc/nginx/nginx.conf\
+    && sed -i -e "s/proxy_set_header Accept-Encoding/proxy_set_header x-request-id '';proxy_set_header x-forwarded-for '';proxy_set_header x-forwarded-proto '';proxy_set_header x-forwarded-port '';proxy_set_header via '';proxy_set_header connect-time '';proxy_set_header x-request-start '';proxy_set_header total-route-time '';proxy_set_header Accept-Encoding/" /etc/nginx/nginx.conf\
+    && nginx -g "daemon off;"
